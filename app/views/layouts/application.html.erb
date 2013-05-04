@@ -7,7 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2) %>
 <%= yield %>
 
 </body>
