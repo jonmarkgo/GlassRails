@@ -1,4 +1,5 @@
 GlassRails
 ==========
 
-Rails + Google Glass Blank Project
+Blank scaffold for Google Glass projects.
+Uses Ruby on rails, Devise, Omniauth, Bootstrap, and Google-API-Client
