@@ -33,7 +33,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
       ## Token authenticatable
       # t.string :authentication_token
 
-
+      t.string :access_token
+      t.string :refresh_token
+      t.datetime :token_expires_at
       t.timestamps
     end
 
