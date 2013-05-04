@@ -1,3 +1,4 @@
+require "google/api_client"
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -28,29 +29,30 @@ class User < ActiveRecord::Base
     user
   end
 
-   def get_client
+  def self.get_client(user)
     client = Google::APIClient.new
     client.authorization.scope = 'https://www.googleapis.com/auth/calendar'
-    client.authorization.access_token = get_current_token
+    client.authorization.access_token = User.get_current_token(user)
     client
   end
 
-  def get_current_token!
-    if (access_token.nil? || (token_expires_at.nil? || token_expires_at < Time.now))
+  def self.get_current_token(user)
+    if (user.access_token.nil? || (user.token_expires_at.nil? || user.token_expires_at < Time.now))
       data = {
         :client_id => ENV["GOOGLE_KEY"],
         :client_secret => ENV["GOOGLE_SECRET"],
-        :refresh_token => refresh_token,
+        :refresh_token => user.refresh_token,
         :grant_type => "refresh_token"
       }
       @response = ActiveSupport::JSON.decode(RestClient.post "https://accounts.google.com/o/oauth2/token", data)
+      puts @response.to_json
       if @response["access_token"].present?
-        access_token = @response["access_token"]
-        token_expires_at = @response["token_expires_at"]
+        user.access_token = @response["access_token"]
+        user.token_expires_at = @response["token_expires_at"]
       end
-      save
+      user.save
     end
-    access_token
+    user.access_token
   end
 
 end
