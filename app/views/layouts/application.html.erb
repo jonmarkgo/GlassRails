@@ -7,7 +7,15 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2) %>
+<% if user_signed_in? %>
+  <li>
+  <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>        
+  </li>
+<% else %>
+  <li>
+  <%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2) %>
+  </li>
+<% end %>
 <%= yield %>
 
 </body>
