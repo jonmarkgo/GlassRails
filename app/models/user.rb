@@ -20,4 +20,17 @@ class User < ActiveRecord::Base
     end
     user
   end
+
+  def refresh_token
+	  data = {
+	    :client_id => ENV["GOOGLE_KEY"],
+	    :client_secret => ENV["GOOGLE_SECRET"],
+	    :refresh_token => refresh_token,
+	    :grant_type => "refresh_token"
+	  }
+	  @response = ActiveSupport::JSON.decode(RestClient.post "https://accounts.google.com/o/oauth2/token", data)
+	  if @response["access_token"].present?
+	    access_token = @response["access_token"]
+	  end
+  end
 end
