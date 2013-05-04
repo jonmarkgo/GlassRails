@@ -15,22 +15,38 @@ class User < ActiveRecord::Base
 
     unless user
         user = User.create(email: data["email"],
-	    		   password: Devise.friendly_token[0,20]
+	    		   password: Devise.friendly_token[0,20],
+             access_token: data["access_token"],
+             refresh_token: data["refresh_token"],
+             token_expires_at: Time.at(data["expires_at"])
 	    		  )
     end
     user
   end
 
-  def refresh_token
-	  data = {
-	    :client_id => ENV["GOOGLE_KEY"],
-	    :client_secret => ENV["GOOGLE_SECRET"],
-	    :refresh_token => refresh_token,
-	    :grant_type => "refresh_token"
-	  }
-	  @response = ActiveSupport::JSON.decode(RestClient.post "https://accounts.google.com/o/oauth2/token", data)
-	  if @response["access_token"].present?
-	    access_token = @response["access_token"]
-	  end
+   def get_client
+    client = Google::APIClient.new
+    client.authorization.scope = 'https://www.googleapis.com/auth/calendar'
+    client.authorization.access_token = get_current_token
+    client
   end
+
+  def get_current_token!
+    if (access_token.nil? || (token_expires_at.nil? || token_expires_at < Time.now))
+      data = {
+        :client_id => ENV["GOOGLE_KEY"],
+        :client_secret => ENV["GOOGLE_SECRET"],
+        :refresh_token => refresh_token,
+        :grant_type => "refresh_token"
+      }
+      @response = ActiveSupport::JSON.decode(RestClient.post "https://accounts.google.com/o/oauth2/token", data)
+      if @response["access_token"].present?
+        access_token = @response["access_token"]
+        token_expires_at = @response["token_expires_at"]
+      end
+      save
+    end
+    access_token
+  end
+
 end
