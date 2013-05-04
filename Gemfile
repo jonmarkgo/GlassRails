@@ -13,6 +13,8 @@ group :development, :test do
   gem "sqlite3"
 end
 
+gem "google-api-client"
+
 gem "devise"
 gem "omniauth-google-oauth2"
 
