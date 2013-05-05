@@ -1,4 +1,5 @@
 require "google/api_client"
+require "rest_client"
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -48,7 +49,7 @@ class User < ActiveRecord::Base
       puts @response.to_json
       if @response["access_token"].present?
         user.access_token = @response["access_token"]
-        user.token_expires_at = @response["token_expires_at"]
+        user.token_expires_at = Time.at(Time.now.to_i + @response["expires_in"])
       end
       user.save
     end

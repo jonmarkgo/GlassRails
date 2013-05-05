@@ -1,4 +1,10 @@
 GlassRails::Application.routes.draw do
+  get "example/index"
+
+  get "example/add_card"
+
+  get "example/get_location"
+
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   # The priority is based upon order of creation:
@@ -50,7 +56,7 @@ GlassRails::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'example#index'
 
   # See how all your routes lay out with "rake routes"
 

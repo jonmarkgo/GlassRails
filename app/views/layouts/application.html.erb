@@ -44,7 +44,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">GlassRails</a>
+          <a class="brand" href="/">GlassRails</a>
           <div class="container-fluid nav-collapse">
             <ul class="nav">
 	            <% if user_signed_in? %>
@@ -68,9 +68,8 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header">Sidebar</li>
-              <li><%= link_to "Link1", "/path1"  %></li>
-              <li><%= link_to "Link2", "/path2"  %></li>
-              <li><%= link_to "Link3", "/path3"  %></li>
+              <li><%= link_to 'Insert Test Timeline Card', example_add_card_path %></li>
+              <li><%= link_to 'Get Last Known Location', example_get_location_path %></li>
             </ul>
           </div><!--/.well -->
         </div><!--/span-->

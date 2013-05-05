@@ -14,7 +14,7 @@ group :development, :test do
 end
 
 gem "google-api-client"
-
+gem "rest-client"
 gem "twitter-bootstrap-rails"
 
 gem "devise"
